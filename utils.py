@@ -117,7 +117,10 @@ def yita_at(center_land:point, tower_center_land:point):
     return 0.99321 - 0.0001176 * distance + math.pow(10, -8) * 1.97 * math.pow(distance, 2)
 
 def yita_trunc(glass):
-    return glass.valid_area_to_absorb / glass.valid_area_to_reflect
+    if glass.valid_area_to_reflect == 0:
+        return 0
+    else:
+        return glass.valid_area_to_absorb / glass.valid_area_to_reflect
 
 def yita_cos(vlight, norm):
     return abs((vlight.x * norm.x + vlight.y * norm.y + vlight.z * norm.z) / vlight.getlen() * norm.getlen())
