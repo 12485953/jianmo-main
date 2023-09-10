@@ -9,7 +9,7 @@ parser.add_argument('--tower_center_land', type=point, default=point(0, 0, 84))
 parser.add_argument('--tower_height', type=float, default=8)
 parser.add_argument('--tower_r', type=float, default=3.5)
 parser.add_argument('--divide_num', type=int, default=100)
-parser.add_argument('--D', type=int, default=275)
+parser.add_argument('--D', type=int, default=-28)
 parser.add_argument('--latitude', type=float, default=math.pi * 39.45 / 180)
 parser.add_argument('--ST', type=float, default=13.5, help='当地时间')
 parser.add_argument('--glass_height', type=list, default=[])
@@ -57,11 +57,15 @@ print('---------------------- shadow calculation step 2 finish -----------------
 #     print('----------------------')
 
 cal_optical_efficiency_for_all_glasses(glasses, args.tower_center_land)
-average_optical_efficiency = cal_average_optical_efficiency(glasses)
+average_optical_efficiency, average_yita_cos, average_yita_sb, average_yita_trunc = cal_average_optical_efficiency(glasses)
 
 E_field = E_field(DNI, glasses)
 
 print('average_optical_efficiency: ', average_optical_efficiency)
+print('average_yita_cos: ', average_yita_cos)
+print('average_yita_sb: ', average_yita_sb)
+print('average_yita_trunc: ', average_yita_trunc)
+
 print('E_field: ', E_field)
 
 

@@ -130,18 +130,28 @@ def cal_optical_efficiency_for_a_glass(glass, tower_center_land):
     yita_cos_value = yita_cos(glass.vlight, glass.coord_z_land)
     yita_at_value = yita_at(glass.center_land, tower_center_land)
     yita_trunc_value = yita_trunc(glass)
-    return optical_efficiency(yita_sb_value, yita_cos_value, yita_at_value, yita_trunc_value)
+    return optical_efficiency(yita_sb_value, yita_cos_value, yita_at_value, yita_trunc_value), yita_cos_value, yita_sb_value, yita_trunc_value
 def cal_optical_efficiency_for_all_glasses(glasses, tower_center_land):
     for glass in glasses:
-        optical_eff = cal_optical_efficiency_for_a_glass(glass, tower_center_land)
+        optical_eff, yita_cos, yita_sb, yita_trunc = cal_optical_efficiency_for_a_glass(glass, tower_center_land)
         glass.optical_efficiency = optical_eff
+        glass.yita_cos = yita_cos
+        glass.yita_sb = yita_sb
+        glass.yita_trunc = yita_trunc
+
 
 
 def cal_average_optical_efficiency(glasses):
     sum = 0
+    sum1 = 0
+    sum2 = 0
+    sum3 = 0
     for glass in glasses:
         sum += glass.optical_efficiency
-    return sum / len(glasses)
+        sum1 += glass.yita_cos
+        sum2 += glass.yita_sb
+        sum3 += glass.yita_trunc
+    return sum / len(glasses), sum1 / len(glasses), sum2 / len(glasses), sum3 / len(glasses)
 
 def E_field(DNI, glasses):
     toatl = 0
@@ -223,6 +233,9 @@ class Glass:
         self.valid_area_to_reflect = poly.area
         self.valid_area_to_absorb = 1
         self.optical_efficiency = 0
+        self.yita_cos = 0
+        self.yita_sb = 0
+        self.yita_trunc = 0
 
     def norm(self, vlight):
         fir = point(self.center_land.x + self.vreflict.x, self.center_land.y + self.vreflict.y, self.center_land.z + self.vreflict.z)
