@@ -1,6 +1,7 @@
 import shapely
 import math
 import numpy as np
+from mirror import Glass
 
 def length(vector):
     return math.sqrt(math.pow(vector[0], 2) + math.pow(vector[1], 2) + math.pow(vector[2], 2))
@@ -113,6 +114,16 @@ def yita_sb(glass):
             valid_area += polygon.area
 
 
-def optical_efficiency():
-    print(1)
+def optical_efficiency(yita_sb, yita_cos, yita_at, yita_trunc):
+    return yita_at * yita_trunc * yita_cos * yita_sb * 0.92
+
+def yita_at(center_land:point, tower_center_land:point):
+    distance = math.sqrt(math.pow(center_land.x - tower_center_land.x, 2) + math.pow(center_land.y - tower_center_land.y, 2) + math.pow(center_land.z - tower_center_land.z, 2))
+    return 0.99321 - 0.0001176 * distance + math.pow(10, -8) * 1.97 * math.pow(distance, 2)
+
+def yita_trunc(glass: Glass):
+    return glass.valid_area_to_absorb / glass.valid_area_to_reflect
+
+def yita_cos(vlight:point, norm:point):
+    return (vlight.x * norm.x + vlight.y * norm.y + vlight.z * norm.z) / (vlight.getlen() * norm.getlen())
 
