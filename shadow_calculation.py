@@ -3,7 +3,6 @@ import math
 import shapely
 import numpy as np
 from shapely.geometry import Polygon
-from mirror import Glass
 from utils import *
 
 def is_front(glass1, glass2, cos_rs):
@@ -83,6 +82,7 @@ def cal_shadow_on_surface(glass, obstacle, vlight, cos_rs):
 
 
 def cal_valid_area_in_one_glass(glasses, index, vlight, cos_rs):
+    print('----------------- new glass -----------------------')
     glass = glasses[index]
     for i, obstacle in enumerate(glasses):
         if i == index:
@@ -93,6 +93,14 @@ def cal_valid_area_in_one_glass(glasses, index, vlight, cos_rs):
 def cal_valid_area_for_all_glasses(glasses, vlight, cos_rs):
     for i in range(len(glasses)):
         cal_valid_area_in_one_glass(glasses, i, vlight, cos_rs)
+    for glass in glasses:
+        valid_area_to_reflect = 0
+        if not glass.valid_polygon:
+            valid_area_to_reflect = 0
+        else:
+            for polygon in glass.valid_polygon:
+                valid_area_to_reflect += polygon.area
+        glass.valid_area_to_reflect = valid_area_to_reflect
 
 
 

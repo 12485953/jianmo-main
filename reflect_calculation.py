@@ -1,7 +1,6 @@
 import math
 
 from utils import *
-from mirror import *
 from shadow_calculation import *
 import shapely
 from shapely.geometry import LineString
@@ -137,12 +136,12 @@ def cal_valid_area_for_a_subset(points, glass, vreflect):
     shadow_polygon_vertex_2d = [(shadow_vertex[0], shadow_vertex[1]) for shadow_vertex in
                                 points]
     shadow_polygon = Polygon(shadow_polygon_vertex_2d)
-    plot_polygon(shadow_polygon, 'black')
+    #plot_polygon(shadow_polygon, 'black')
 
     glass_valid_polygon = []
     for glass_polygon_piece in glass.valid_polygon:
 
-        plot_polygon(glass_polygon_piece)
+        #plot_polygon(glass_polygon_piece)
         glass_polygon_piece_own = glass_polygon_piece.intersection(shadow_polygon)
         if isinstance(glass_polygon_piece_own, shapely.geometry.base.GeometrySequence):
             geoms = glass_polygon_piece_own.geoms
@@ -161,6 +160,15 @@ def cal_valid_reflect_area_for_all_glasses(glasses, tower_center, tower_height, 
         subsets = divide_points(shadow_vertex_on_glass_in_glass)
 
         cal_valid_area_for_a_glass(subsets, glass, glass.vreflict)
+
+    for glass in glasses:
+        valid_area_to_absorb = 0
+        if not glass.valid_polygon:
+            valid_area_to_absorb = 0
+        else:
+            for polygon in glass.valid_polygon:
+                valid_area_to_absorb += polygon.area
+        glass.valid_area_to_absorb = valid_area_to_absorb
 
 
 
