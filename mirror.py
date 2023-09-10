@@ -28,6 +28,7 @@ class Glass:
         self.transform_from_land = np.linalg.inv(self.transform_to_land)
         self.valid_area_to_reflect = poly.area
         self.valid_area_to_absorb = 1
+        self.yita = 0
 
     def norm(self, vlight):
         fir = point(self.center_land.x + self.vreflict.x, self.center_land.y + self.vreflict.y, self.center_land.z + self.vreflict.z)

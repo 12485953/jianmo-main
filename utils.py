@@ -127,3 +127,11 @@ def yita_trunc(glass: Glass):
 def yita_cos(vlight:point, norm:point):
     return math.abs((vlight.x * norm.x + vlight.y * norm.y + vlight.z * norm.z) / (vlight.getlen() * norm.getlen()), 2)
 
+def E_field(DNI, glasses:list(Glass)):
+    toatl = 0
+    for glass in glasses:
+       area = glass.width * glass.height
+       toatl += area * glass.yita
+
+    toatl = toatl * DNI
+    return toatl
