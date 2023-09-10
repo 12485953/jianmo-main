@@ -137,6 +137,14 @@ def cal_optical_efficiency_for_all_glasses(glasses, tower_center_land):
     for glass in glasses:
         optical_eff = cal_optical_efficiency_for_a_glass(glass, tower_center_land)
         glass.optical_efficiency = optical_eff
+
+
+def cal_average_optical_efficiency(glasses):
+    sum = 0
+    for glass in glasses:
+        sum += glass.optical_efficiency
+    return sum / len(glasses)
+
 def E_field(DNI, glasses:list(Glass)):
     toatl = 0
     for glass in glasses:
@@ -167,7 +175,9 @@ def read_coordinates_from_excel(file_path='supplement.xlsx', sheet_name="Sheet1"
         sheet = workbook[sheet_name]
 
         # 从Excel中读取坐标点信息
-        for row in sheet.iter_rows(values_only=True):
+        for i, row in enumerate(sheet.iter_rows(values_only=True)):
+            if i == 0:
+                continue
             if len(row) >= 2:  # 确保至少有两列数据
                 x, y = row[0], row[1]
                 coordinates.append((x, y))
