@@ -125,5 +125,5 @@ def yita_trunc(glass: Glass):
     return glass.valid_area_to_absorb / glass.valid_area_to_reflect
 
 def yita_cos(vlight:point, norm:point):
-    return (vlight.x * norm.x + vlight.y * norm.y + vlight.z * norm.z) / (vlight.getlen() * norm.getlen())
+    return math.abs((vlight.x * norm.x + vlight.y * norm.y + vlight.z * norm.z) / (vlight.getlen() * norm.getlen()), 2)
 
