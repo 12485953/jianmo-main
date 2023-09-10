@@ -40,7 +40,7 @@ def sin_sun_elevation_angle(D: float, latitude: float, ST: float) -> float:
     :param ST: 当地时间
     :return: 太阳高度角的正弦值
     """
-    return (1 - math.pow(sin_sun_declination_angle(D), 2)) * 0.5 * math.cos(latitude) * math.cos(sun_time_angle(ST)) + sin_sun_declination_angle(D) * math.sin(latitude)
+    return math.sqrt(1 - math.pow(sin_sun_declination_angle(D), 2)) * 0.5 * math.cos((latitude / 180) * math.pi) * math.cos(sun_time_angle(ST)) + sin_sun_declination_angle(D) * math.sin((latitude / 180) * math.pi)
 
 
 def sin_sun_declination_angle(D: float) -> float:
