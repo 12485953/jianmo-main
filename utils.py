@@ -127,6 +127,16 @@ def yita_trunc(glass: Glass):
 def yita_cos(vlight:point, norm:point):
     return math.abs((vlight.x * norm.x + vlight.y * norm.y + vlight.z * norm.z) / (vlight.getlen() * norm.getlen()), 2)
 
+def cal_optical_efficiency_for_a_glass(glass, tower_center_land):
+    yita_sb_value = yita_sb(glass)
+    yita_cos_value = yita_cos(glass.vlight, glass.norm)
+    yita_at_value = yita_at(glass.center_land, tower_center_land)
+    yita_trunc_value = yita_trunc(glass)
+    return optical_efficiency(yita_sb_value, yita_cos_value, yita_at_value, yita_trunc_value)
+def cal_optical_efficiency_for_all_glasses(glasses, tower_center_land):
+    for glass in glasses:
+        optical_eff = cal_optical_efficiency_for_a_glass(glass, tower_center_land)
+        glass.optical_efficiency = optical_eff
 def E_field(DNI, glasses:list(Glass)):
     toatl = 0
     for glass in glasses:
@@ -135,3 +145,45 @@ def E_field(DNI, glasses:list(Glass)):
 
     toatl = toatl * DNI
     return toatl
+
+import openpyxl
+
+def read_coordinates_from_excel(file_path='supplement.xlsx', sheet_name="Sheet1"):
+    """
+    从Excel文件中读取坐标点信息。
+
+    参数:
+    file_path (str): Excel文件的路径。
+    sheet_name (str): 要读取数据的工作表名称。
+
+    返回:
+    list: 包含坐标点信息的列表，每个元素是一个包含x和y坐标的元组。
+    """
+    coordinates = []
+
+    try:
+        # 打开Excel文件
+        workbook = openpyxl.load_workbook(file_path)
+        sheet = workbook[sheet_name]
+
+        # 从Excel中读取坐标点信息
+        for row in sheet.iter_rows(values_only=True):
+            if len(row) >= 2:  # 确保至少有两列数据
+                x, y = row[0], row[1]
+                coordinates.append((x, y))
+
+        return coordinates
+
+    except Exception as e:
+        print(f"读取Excel文件时发生错误：{str(e)}")
+        return None
+
+
+def create_glasses(coordinates, glass_height, vlight, heights, widths, tower_center_land):
+    glasses = []
+    for index, coordinate in enumerate(coordinates):
+        glass = Glass(point(coordinate[0], coordinate[1], glass_height[index]), vlight, heights[index], widths[index], tower_center_land)
+        glasses.append(glass)
+
+    return glasses
+
