@@ -82,7 +82,7 @@ def cal_shadow_on_surface(glass, obstacle, vlight, cos_rs):
 
 
 def cal_valid_area_in_one_glass(glasses, index, vlight, cos_rs):
-    print('----------------- new glass -----------------------')
+    #print('----------------- new glass -----------------------')
     glass = glasses[index]
     for i, obstacle in enumerate(glasses):
         if i == index:

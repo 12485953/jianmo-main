@@ -126,13 +126,13 @@ def divide_points(points):
 
 
 def cal_valid_area_for_a_glass(subsets, glass, vreflect):
-    print('------------- new glass --------------------')
+    #print('------------- new glass --------------------')
     for subset in subsets:
         cal_valid_area_for_a_subset(subset, glass, vreflect)
 
 
 def cal_valid_area_for_a_subset(points, glass, vreflect):
-    print('------------- new shadow subset --------------------')
+    #print('------------- new shadow subset --------------------')
     shadow_polygon_vertex_2d = [(shadow_vertex[0], shadow_vertex[1]) for shadow_vertex in
                                 points]
     shadow_polygon = Polygon(shadow_polygon_vertex_2d)
